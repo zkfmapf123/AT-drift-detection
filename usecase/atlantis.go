@@ -22,9 +22,43 @@ type APIPlanBodyParams struct {
 }
 
 type APIPlanBodyPaths struct {
-	ProjectName string `json:"ProjectName"`
 	Directory   string `json:"Directory"`
-	Workspace   string `json:"Workspace,omitempty"` // default
+	Workspace   string `json:"Workspace,omitempty"`   // default
+	ProjectName string `json:"ProjectName,omitempty"` // 중복 프로젝트 구분용
+}
+
+type APIPlanResponse struct {
+	// Error          interface{}     `json:"Error"`
+	// Failure        string          `json:"Failure"`
+	ProjectResults []struct {
+		PlanSuccess struct {
+			TerraformOutput string `json:"TerraformOutput"`
+		} `json:"PlanSuccess"`
+	} `json:"ProjectResults"`
+	// PlansDeleted   bool            `json:"PlansDeleted"`
+}
+
+type ProjectResult struct {
+	// Command            int          `json:"Command"`
+	// SubCommand         string       `json:"SubCommand"`
+	// RepoRelDir         string       `json:"RepoRelDir"`
+	// Workspace          string       `json:"Workspace"`
+	// Error              interface{}  `json:"Error"`
+	// Failure            string       `json:"Failure"`
+	PlanSuccess *PlanSuccess `json:"PlanSuccess"`
+	// PolicyCheckSuccess interface{}  `json:"PolicyCheckSuccess"`
+	// ApplySuccess       string       `json:"ApplySuccess"`
+	// VersionSuccess     string       `json:"VersionSuccess"`
+	// ProjectName        string       `json:"ProjectName"`
+}
+
+type PlanSuccess struct {
+	TerraformOutput string `json:"TerraformOutput"`
+	// LockURL         string `json:"LockURL"`
+	// RePlanCmd       string `json:"RePlanCmd"`
+	// ApplyCmd        string `json:"ApplyCmd"`
+	// HasDiverged     bool   `json:"HasDiverged"`
+	// MergedAgain     bool   `json:"MergedAgain"`
 }
 
 /*

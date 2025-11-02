@@ -1,6 +1,8 @@
 package cmd
 
 import (
+	"fmt"
+
 	"github.com/spf13/cobra"
 	"github.com/zkfmapf123/at-plan/client"
 	"github.com/zkfmapf123/at-plan/usecase"
@@ -18,7 +20,18 @@ var planCmd = &cobra.Command{
 		if err := validAtlantis(&at); err != nil {
 			panic(err)
 		}
-		at.Plan()
+
+		outputs := at.Plan()
+
+		// outputs
+		for dir, outs := range outputs {
+			fmt.Println(">>>", dir)
+			for _, out := range outs.ProjectResults {
+				fmt.Println(out.PlanSuccess.TerraformOutput)
+			}
+		}
+
+		// slack send
 	},
 }
 

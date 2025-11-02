@@ -122,13 +122,23 @@ func (a *AtlantisParams) SetConfigParmas() (usecase.AtlantisConfigParams, error)
 	return params, nil
 }
 
-func (a *AtlantisParams) Plan() {
+func (a *AtlantisParams) Plan() map[string]usecase.APIPlanResponse {
 
 	// gitAttr := strings.Split(a.Request.AtlantisRepository, "/")
 	// // owner := gitAttr[0]
 	// repository := gitAttr[1]
 
+	tfResponse := make(map[string]usecase.APIPlanResponse)
+
 	for _, project := range a.atlantisConfigParmas.Projects {
+
+		paths := []usecase.APIPlanBodyPaths{
+			{
+				Directory:   project.Dir,
+				Workspace:   "default",
+				ProjectName: project.Name,
+			},
+		}
 
 		resp, err := a.httpClient.Comm(
 			utils.HTTPParams{
@@ -142,13 +152,7 @@ func (a *AtlantisParams) Plan() {
 					"Repository": a.Request.AtlantisRepository,
 					"Ref":        a.Request.GithubRepoRef,
 					"Type":       "Github",
-					"Paths": []usecase.APIPlanBodyPaths{
-						{
-							ProjectName: project.Name,
-							Directory:   project.Dir,
-							Workspace:   "default",
-						},
-					},
+					"Paths":      paths,
 				},
 			},
 		)
@@ -157,7 +161,9 @@ func (a *AtlantisParams) Plan() {
 			panic(err)
 		}
 
-		fmt.Println("error : ", err)
-		fmt.Println(string(resp))
+		outputs := donggo.JsonParse[usecase.APIPlanResponse](resp)
+		tfResponse[project.Dir] = outputs
 	}
+
+	return tfResponse
 }
