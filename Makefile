@@ -13,3 +13,6 @@ run: build
 	-t atlantis_token \
 	-r atlantis_repository \
 	-c atlantis_config_file
+
+test:
+	go test -v ./...
