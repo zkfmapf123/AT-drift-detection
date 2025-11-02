@@ -1,13 +1,19 @@
 package usecase
 
 type AtlantisRequest struct {
+	// Github
 	GithubToken   string
 	GithubRepoRef string
 
+	// Atlantis
 	AtlantisURL        string
 	AtlantisToken      string
 	AtlantisRepository string
 	AtlantisConfigFile string
+
+	// Slack
+	SlackBotToken string
+	SlackChannel  string
 }
 
 type APIHealthResponse struct {
@@ -106,4 +112,10 @@ type AtlantisConfigParams struct {
 		Dir      string `yaml:"dir"`
 		Workflow string `yaml:"workflow"`
 	} `yaml:"projects"`
+}
+
+type PlanResultParmas struct {
+	Add     string
+	Change  string
+	Destroy string
 }

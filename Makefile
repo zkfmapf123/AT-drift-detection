@@ -13,7 +13,9 @@ run: build
 	-u https://atlantis.dev.leedonggyu.com \
 	-t leedonggyu-1234 \
 	-r zkfmapf123/atlantis-fargate \
-	-c atlantis.yaml
+	-c atlantis.yaml \ 
+	-s slackt-webhook-url \
+	-l channel 
 
 test:
 	go test -v ./...

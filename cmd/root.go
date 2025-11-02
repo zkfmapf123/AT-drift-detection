@@ -20,6 +20,8 @@ var rootCmd = &cobra.Command{
 		atlantisToken, _ := cmd.Flags().GetString("atlantis-token")
 		atlantisRepository, _ := cmd.Flags().GetString("atlantis-repository")
 		atlantisConfig, _ := cmd.Flags().GetString("atlantis-config")
+		slackBotToken, _ := cmd.Flags().GetString("slack-bot-token")
+		slackChannel, _ := cmd.Flags().GetString("slack-channel")
 
 		atRequest := usecase.AtlantisRequest{
 			GithubToken:        githubToken,
@@ -28,6 +30,8 @@ var rootCmd = &cobra.Command{
 			AtlantisToken:      atlantisToken,
 			AtlantisRepository: atlantisRepository,
 			AtlantisConfigFile: atlantisConfig,
+			SlackBotToken:      slackBotToken,
+			SlackChannel:       slackChannel,
 		}
 
 		ctx := context.WithValue(context.Background(), "atlantis", atRequest)
@@ -42,6 +46,8 @@ func init() {
 	rootCmd.PersistentFlags().StringP("atlantis-token", "t", "", "The Atlantis token")
 	rootCmd.PersistentFlags().StringP("atlantis-repository", "r", "", "Atlantis Repository")
 	rootCmd.PersistentFlags().StringP("atlantis-config", "c", "", "Atlantis Config File")
+	rootCmd.PersistentFlags().StringP("slack-bot-token", "s", "", "Slack Bot Token")
+	rootCmd.PersistentFlags().StringP("slack-channel", "l", "", "Slack Channel")
 }
 
 func Execute() {

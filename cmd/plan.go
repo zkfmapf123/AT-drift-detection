@@ -1,11 +1,12 @@
 package cmd
 
 import (
-	"fmt"
+	"log"
 
 	"github.com/spf13/cobra"
 	"github.com/zkfmapf123/at-plan/client"
 	"github.com/zkfmapf123/at-plan/usecase"
+	"github.com/zkfmapf123/at-plan/utils"
 )
 
 var planCmd = &cobra.Command{
@@ -24,14 +25,18 @@ var planCmd = &cobra.Command{
 		outputs := at.Plan()
 
 		// outputs
+		tfOutputs := make(map[string]string)
+
 		for dir, outs := range outputs {
-			fmt.Println(">>>", dir)
 			for _, out := range outs.ProjectResults {
-				fmt.Println(out.PlanSuccess.TerraformOutput)
+				tfOutputs[dir] = out.PlanSuccess.TerraformOutput
 			}
 		}
 
 		// slack send
+		if err := utils.SendSlack(atRequest.SlackBotToken, atRequest.SlackChannel, tfOutputs); err != nil {
+			log.Printf("slack send error: %s\n", err)
+		}
 	},
 }
 
