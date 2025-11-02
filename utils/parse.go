@@ -15,7 +15,7 @@ func linesToPlanOutput(tfOutputs string) (add string, change string, destroy str
 	re := regexp.MustCompile(`(\d+)\s+to add,\s+(\d+)\s+to change,\s+(\d+)\s+to destroy`)
 	matches := re.FindStringSubmatch(strings.TrimSpace(lines[1]))
 
-	if len(matches) == 4 {
+	if len(matches) != 4 {
 		return "", "", ""
 	}
 

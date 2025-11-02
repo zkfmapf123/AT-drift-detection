@@ -33,7 +33,7 @@ func SendSlack(
 	api := slack.New(slackBotToken)
 	reader := bytes.NewReader([]byte(planOutputContent))
 
-	placeHolder := fmt.Sprintf("⚠️ Drift detected in %d project(s)\n", countNonEmptyOutputs(tfOutputs))
+	placeHolder := fmt.Sprintf("Drift detected in %d project(s)\n", countNonEmptyOutputs(tfOutputs))
 	for dir, output := range tfOutputs {
 		add, change, destroy := linesToPlanOutput(output)
 
