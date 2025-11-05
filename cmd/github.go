@@ -41,6 +41,8 @@ var githubCmd = &cobra.Command{
 		atReqParams.SlackChannel = cmd.PersistentFlags().Lookup("at-slack-channel").Value.String()
 		atReqParams.Outputs = cmd.PersistentFlags().Lookup("at-outputs").Value.String()
 
+		log.Println("terraform Outputs : ", atReqParams.Outputs)
+
 		gc, err := client.NewGithubRequest(atReqParams)
 		if err != nil {
 			log.Fatalf("github request error: %s", err)
@@ -57,6 +59,8 @@ var githubCmd = &cobra.Command{
 
 		status, msg := utils.LinseToParseLastMesasge(atReqParams.Outputs)
 		prParams.Outputs = msg
+
+		log.Println("parsing Terraform Outputs : ", msg)
 
 		// PR 처음인 경우
 		if isNewPR {
